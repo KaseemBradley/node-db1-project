@@ -24,9 +24,21 @@ router.get("/:id", middleware.checkAccountId, async (req, res, next) => {
   }
 });
 
-router.post("/", (req, res, next) => {
-  // DO YOUR MAGIC
-});
+router.post(
+  "/",
+  middleware.checkAccountNameUnique,
+  middleware.checkAccountPayload,
+  async (req, res, next) => {
+    // DO YOUR MAGIC
+    const body = req.body;
+    try {
+      const newAccount = await Account.create(body);
+      res.status(201).json(newAccount);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 router.put("/:id", (req, res, next) => {
   // DO YOUR MAGIC
