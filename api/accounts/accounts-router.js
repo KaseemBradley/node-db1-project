@@ -13,13 +13,14 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.get("/:id", async (req, res, next) => {
+router.get("/:id", middleware.checkAccountId, async (req, res, next) => {
   // DO YOUR MAGIC
+  const id = req.params.id;
   try {
-    const accountWithId = await Account.getById(req.params.id);
-    res.json(accountWithId);
-  } catch (error) {
-    next(error);
+    const account = await Account.getById(id);
+    res.json(account);
+  } catch (err) {
+    next(err);
   }
 });
 
