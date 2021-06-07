@@ -40,9 +40,22 @@ router.post(
   }
 );
 
-router.put("/:id", (req, res, next) => {
-  // DO YOUR MAGIC
-});
+router.put(
+  "/:id",
+  middleware.checkAccountId,
+  middleware.checkAccountPayload,
+  async (req, res, next) => {
+    // DO YOUR MAGIC
+    const id = req.params.id;
+    const body = req.body;
+    try {
+      const updatedAccount = Account.updateById(id, body);
+      res.json(updatedAccount);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 router.delete("/:id", (req, res, next) => {
   // DO YOUR MAGIC
