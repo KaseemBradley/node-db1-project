@@ -57,8 +57,15 @@ router.put(
   }
 );
 
-router.delete("/:id", (req, res, next) => {
+router.delete("/:id", middleware.checkAccountId, async (req, res, next) => {
   // DO YOUR MAGIC
+  const id = req.params.id;
+  try {
+    await Account.deleteById(id);
+    res.json(req.account);
+  } catch (error) {
+    next(error);
+  }
 });
 
 // eslint-disable-next-line
